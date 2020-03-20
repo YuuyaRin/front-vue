@@ -3,8 +3,12 @@
     <div class="fly-panel fly-panel-user" pad20>
       <div class="layui-tab layui-tab-brief" lay-filter="user">
         <ul class="layui-tab-title">
-          <li><a href="login.html">登入</a></li>
-          <li class="layui-this">找回密码<!--重置密码--></li>
+          <li>
+            <router-link :to="{ name: 'login' }">登录</router-link>
+          </li>
+          <li class="layui-this">
+            <router-link :to="{ name: 'forget' }">忘记密码</router-link>
+          </li>
         </ul>
         <div
           class="layui-form layui-tab-content"

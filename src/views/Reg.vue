@@ -3,8 +3,10 @@
     <div class="fly-panel fly-panel-user" pad20>
       <div class="layui-tab layui-tab-brief" lay-filter="user">
         <ul class="layui-tab-title">
-          <li><a href="login.html">登入</a></li>
-          <li class="layui-this">注册</li>
+          <li><router-link :to="{ name: 'login' }">登录</router-link></li>
+          <li class="layui-this">
+            <router-link :to="{ name: 'reg' }">注册</router-link>
+          </li>
         </ul>
         <div
           class="layui-form layui-tab-content"

@@ -3,8 +3,10 @@
     <div class="fly-panel fly-panel-user" pad20>
       <div class="layui-tab layui-tab-brief" lay-filter="user">
         <ul class="layui-tab-title">
-          <li class="layui-this">登入</li>
-          <li><a href="reg.html">注册</a></li>
+          <li class="layui-this">
+            <router-link :to="{ name: 'login' }">登录</router-link>
+          </li>
+          <li><router-link :to="{ name: 'reg' }">注册</router-link></li>
         </ul>
         <div
           class="layui-form layui-tab-content"
@@ -67,7 +69,9 @@
                     立即登录
                   </button>
                   <span style="padding-left:20px;">
-                    <a href="forget.html">忘记密码？</a>
+                    <router-link :to="{ name: 'forget' }"
+                      >忘记密码？</router-link
+                    >
                   </span>
                 </div>
                 <div class="layui-form-item fly-form-app">
