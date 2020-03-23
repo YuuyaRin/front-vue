@@ -7,13 +7,14 @@ import VeeValidate, { Validator } from "vee-validate";
 // import zh from "vee-validate/dist/locale/zh_CN";
 // 方法二
 import "./local/index";
+import axios from "axios";
 Vue.use(VeeValidate);
 // 方法二：
 // Validator.localize("zh-CN", zh);
 const validator = new Validator();
 validator.localize("zh-CN");
 Vue.config.productionTip = false;
-
+axios.defaults.baseURL = (process.env.NODE_ENV !== 'production') ? 'http://localhost:3000' : 'http://your.domain.com';
 new Vue({
   router,
   store,

@@ -11,7 +11,7 @@ const dictionary = {
     attributes: {
       email: "邮箱",
       password: "密码",
-      name: "账号",
+      username: "账号",
       code: "验证码"
     }
   }

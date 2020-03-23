@@ -17,17 +17,22 @@
             <div class="layui-form layui-form-pane">
               <form method="post">
                 <div class="layui-form-item">
-                  <label for="L_email" class="layui-form-label">邮箱</label>
+                  <label for="L_email" class="layui-form-label">用户名</label>
                   <div class="layui-input-inline">
                     <input
                       type="text"
-                      id="L_email"
-                      name="email"
-                      required
-                      lay-verify="required"
+                      name="username"
+                      v-model="username"
+                      placeholder="请输入用户名"
+                      v-validate="'required|email'"
                       autocomplete="off"
                       class="layui-input"
                     />
+                  </div>
+                  <div class="layui-form-mid">
+                    <span style="color: #c00;">{{
+                      errors.first("username")
+                    }}</span>
                   </div>
                 </div>
                 <div class="layui-form-item">
@@ -35,33 +40,44 @@
                   <div class="layui-input-inline">
                     <input
                       type="password"
-                      id="L_pass"
-                      name="pass"
-                      required
-                      lay-verify="required"
-                      autocomplete="off"
-                      class="layui-input"
-                    />
-                  </div>
-                </div>
-                <div class="layui-form-item">
-                  <label for="L_vercode" class="layui-form-label"
-                    >人类验证</label
-                  >
-                  <div class="layui-input-inline">
-                    <input
-                      type="text"
-                      id="L_vercode"
-                      name="vercode"
-                      required
-                      lay-verify="required"
-                      placeholder="请回答后面的问题"
+                      name="password"
+                      v-model="password"
+                      v-validate="'required|min:6'"
+                      placeholder="请输入密码"
                       autocomplete="off"
                       class="layui-input"
                     />
                   </div>
                   <div class="layui-form-mid">
-                    <span style="color: #c00;">hello</span>
+                    <span style="color: #c00;">{{
+                      errors.first("password")
+                    }}</span>
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                  <div class="layui-row">
+                    <label for="L_vercode" class="layui-form-label"
+                      >验证码</label
+                    >
+                    <div class="layui-input-inline">
+                      <input
+                        type="text"
+                        name="code"
+                        v-model="code"
+                        v-validate="'required|length:4'"
+                        placeholder="请输入验证码"
+                        autocomplete="off"
+                        class="layui-input"
+                      />
+                    </div>
+                    <div>
+                      <span class="svg" @click="_getCode()" v-html="svg"
+                        >hello</span
+                      >
+                    </div>
+                  </div>
+                  <div class="layui-form-mid">
+                    <span style="color: #c00;">{{ errors.first("code") }}</span>
                   </div>
                 </div>
                 <div class="layui-form-item">
@@ -99,9 +115,37 @@
 </template>
 
 <script>
+import { getCode } from "@/api/login";
 export default {
-  name: "login"
+  name: "login",
+  data() {
+    return {
+      username: "",
+      password: "",
+      code: "",
+      svg: ""
+    };
+  },
+  mounted() {
+    console.log(1);
+    this._getCode();
+  },
+  methods: {
+    _getCode() {
+      getCode().then(res => {
+        console.log(res);
+        if (res.code === 200) {
+          this.svg = res.data;
+        }
+      });
+    }
+  }
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.svg {
+  position: relative;
+  top: -5px;
+}
+</style>
