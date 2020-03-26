@@ -4,10 +4,11 @@
       <div class="layui-tab layui-tab-brief" lay-filter="user">
         <ul class="layui-tab-title">
           <li>
-            <router-link :to="{ name: 'login' }">登录</router-link>
+            <router-link :to="{ name: 'login' }">登入</router-link>
           </li>
           <li class="layui-this">
-            <router-link :to="{ name: 'forget' }">忘记密码</router-link>
+            找回密码
+            <!--重置密码-->
           </li>
         </ul>
         <div
@@ -50,48 +51,68 @@
               </div>
             </form>
           </div>
+
           <div class="fly-error">该重置密码链接已失效，请重新校验您的信息</div>
           <div class="fly-error">非法链接，请重新校验您的信息</div>
-          -->
+            -->
 
             <div class="layui-form layui-form-pane">
               <form method="post">
                 <div class="layui-form-item">
-                  <label for="L_email" class="layui-form-label">邮箱</label>
+                  <label for="L_email" class="layui-form-label">用户名</label>
                   <div class="layui-input-inline">
                     <input
                       type="text"
-                      id="L_email"
-                      name="email"
-                      required
-                      lay-verify="required"
-                      autocomplete="off"
-                      class="layui-input"
-                    />
-                  </div>
-                </div>
-                <div class="layui-form-item">
-                  <label for="L_vercode" class="layui-form-label"
-                    >人类验证</label
-                  >
-                  <div class="layui-input-inline">
-                    <input
-                      type="text"
-                      id="L_vercode"
-                      name="vercode"
-                      required
-                      lay-verify="required"
-                      placeholder="请回答后面的问题"
+                      name="username"
+                      v-model="username"
+                      v-validate="'required|email'"
+                      placeholder="请输入用户名"
                       autocomplete="off"
                       class="layui-input"
                     />
                   </div>
                   <div class="layui-form-mid">
-                    <span style="color: #c00;">hello</span>
+                    <span style="color: #c00;">{{
+                      errors.first("username")
+                    }}</span>
                   </div>
                 </div>
                 <div class="layui-form-item">
-                  <button class="layui-btn" alert="1" lay-filter="*" lay-submit>
+                  <div class="layui-row">
+                    <label for="L_vercode" class="layui-form-label"
+                      >验证码</label
+                    >
+                    <div class="layui-input-inline">
+                      <input
+                        type="text"
+                        name="code"
+                        v-model="code"
+                        v-validate="'required|length:4'"
+                        placeholder="请输入验证码"
+                        autocomplete="off"
+                        class="layui-input"
+                      />
+                    </div>
+                    <div class>
+                      <span
+                        class="svg"
+                        style="color: #c00;"
+                        @click="_getCode()"
+                        v-html="svg"
+                      ></span>
+                    </div>
+                  </div>
+                  <div class="layui-row">
+                    <span style="color: #c00;">{{ errors.first("code") }}</span>
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                  <button
+                    type="button"
+                    class="layui-btn"
+                    alert="1"
+                    @click="submit()"
+                  >
                     提交
                   </button>
                 </div>
@@ -105,9 +126,45 @@
 </template>
 
 <script>
+import { getCode, forget } from "@/api/login";
+
 export default {
-  name: "forget"
+  name: "forget",
+  data() {
+    return {
+      username: "",
+      code: "",
+      svg: ""
+    };
+  },
+  mounted() {
+    this._getCode();
+  },
+  methods: {
+    _getCode() {
+      getCode().then(res => {
+        console.log(res);
+        if (res.code === 200) {
+          this.svg = res.data;
+        }
+      });
+    },
+    submit() {
+      console.log(1);
+      forget({
+        username: this.username,
+        code: this.code
+      }).then(res => {
+        console.log(res);
+        if (res.code === 200) {
+          alert("邮件发送成功");
+        }
+      });
+    }
+  }
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+// 公用样式可以放在App.vue中
+</style>
